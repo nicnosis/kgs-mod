@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.10.5
+Created-By: 1.8.0_172-b11 (Oracle Corporation)
+main-class: com.gokgs.client.gtp.GtpClient
+Permissions: all-permissions
+
