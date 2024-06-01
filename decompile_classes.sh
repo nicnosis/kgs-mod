@@ -1,30 +1,23 @@
 #!/bin/bash
 
-# Base directory
-BASE_DIR="/Users/nicnosis/Code/_eclipse"
+# Set the base directory to the current directory or specify a different path
+BASE_DIR=$(pwd)  # Use the current directory
+# Uncomment and set the following line if you want to specify a different directory
+# BASE_DIR="/Users/yourusername/Code/_eclipse"
 
-# Directory containing the .class files
-CLASS_DIR="$BASE_DIR/gogo"
+# Set the path to the jd-gui jar file
+JD_GUI_JAR="/Applications/jd-gui-1.6.6.jar"  # Specify the path to your jd-gui jar file
 
-# Output directory for the .java files
-OUTPUT_DIR="$CLASS_DIR/decompiled"
+# Output directory for the decompiled Java files
+OUTPUT_DIR="$BASE_DIR/decompiled_java"
 
-# Ensure the output directory exists
+# Create the output directory if it doesn't exist
 mkdir -p "$OUTPUT_DIR"
 
-# Function to decompile a single .class file
-decompile_class() {
-    local class_file=$1
-    local output_file=$2
-    
-    # Run jd-cli to decompile the .class file to a .java file
-    java -jar /Applications/jd-cli.jar "$class_file" --output-dir "$OUTPUT_DIR"
-}
+# Find and decompile all .class files in the base directory
+find "$BASE_DIR" -type f -name '*.class' | while read -r class_file; do
+    # Decompile the .class file to .java using jd-gui
+    java -jar "$JD_GUI_JAR" "$class_file" --output-dir "$OUTPUT_DIR"
+done
 
-# Export the function so it can be used with find
-export -f decompile_class
-
-# Find and decompile all .class files
-find "$CLASS_DIR" -type f -name '*.class' -exec bash -c 'decompile_class "$0"' {} \;
-
-echo "Decompilation complete. Check the $OUTPUT_DIR directory for .java files."
+echo "Decompilation complete. Decompiled files are located in $OUTPUT_DIR."
