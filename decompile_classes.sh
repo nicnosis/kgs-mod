@@ -1,23 +1,21 @@
 #!/bin/bash
 
-# Set the base directory to the current directory or specify a different path
-BASE_DIR=$(pwd)  # Use the current directory
-# Uncomment and set the following line if you want to specify a different directory
-# BASE_DIR="/Users/yourusername/Code/_eclipse"
+# Specify the base directory where the .class files are located
+# Change this path to match your directory structure
+BASE_DIR="$(pwd)"
 
-# Set the path to the jd-gui jar file
-JD_GUI_JAR="/Applications/jd-gui-1.6.6.jar"  # Specify the path to your jd-gui jar file
-
-# Output directory for the decompiled Java files
-OUTPUT_DIR="$BASE_DIR/decompiled_java"
+# Specify the output directory where the decompiled .java files will be saved
+# Change this path to match your desired output directory
+OUTPUT_DIR="$BASE_DIR/decompiled"
 
 # Create the output directory if it doesn't exist
 mkdir -p "$OUTPUT_DIR"
 
-# Find and decompile all .class files in the base directory
+# Find all .class files in the base directory and its subdirectories
 find "$BASE_DIR" -type f -name '*.class' | while read -r class_file; do
-    # Decompile the .class file to .java using jd-gui
-    java -jar "$JD_GUI_JAR" "$class_file" --output-dir "$OUTPUT_DIR"
+    # Print the name of the file being decompiled
+    echo "Decompiling $class_file"
+    
+    # Use CFR to decompile each .class file and save the output to the specified directory
+    cfr-decompiler "$class_file" --outputdir "$OUTPUT_DIR"
 done
-
-echo "Decompilation complete. Decompiled files are located in $OUTPUT_DIR."
